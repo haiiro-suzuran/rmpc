@@ -1,0 +1,94 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "127.0.0.1:6600",
+    lyrics_dir: Some("/home/suzuran/Music"),
+    password: None,
+    theme: Some("alice"),
+    cache_dir: None,
+    on_song_change: None,
+    volume_step: 5,
+    max_fps: 30,
+    scrolloff: 0,
+    wrap_navigation: false,
+    enable_mouse: false,
+    enable_config_hot_reload: true,
+    status_update_interval_ms: 1000,
+    rewind_to_start_sec: None,
+    reflect_changes_to_playlist: false,
+    select_current_song_on_change: false,
+    browser_song_sort: [Disc, Track, Artist, Title],
+    directories_sort: SortFormat(group_by_type: true, reverse: false),
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 2000, height: 2000),
+        disabled_protocols: ["http://", "https://"],
+        vertical_align: Center,
+        horizontal_align: Center,
+    ),
+    keybinds: (
+        global: {
+            ":":       CommandMode,
+            "<Tab>":   NextTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Home"),
+            "2":       SwitchToTab("Directory"),
+            "3":       SwitchToTab("Event"),
+            "q":       Quit,
+            "p":       TogglePause,
+            "w":       SeekForward,
+            "b":       SeekBack,
+        },
+        navigation: {
+            "k":         Up,
+            "j":         Down,
+            "h":         Left,
+            "l":         Right,
+            "n":         NextResult,
+            "N":         PreviousResult,
+            "a":         Add,
+            "A":         AddAll,
+            "g":         Top,
+            "G":         Bottom,
+            "<CR>":      Confirm,
+            "/":         EnterSearch,
+            "<Esc>":     Close,
+            "D":         Delete,
+            "i":         ShowInfo,
+        },
+        queue: {
+            "D":       DeleteAll,
+            "<CR>":    Play,
+            "a":       AddToPlaylist,
+            "d":       Delete,
+            "X":       Shuffle,
+        },
+    ),
+
+    tabs: [
+        (name: "Home", pane: Split(direction: Horizontal, panes: [
+            // Left Side
+            (size: "60%", borders: "ALL", pane: Split(direction: Vertical, panes: [
+                (size: "3", borders: "BOTTOM | TOP", pane: Component("custom_song_table_header")),
+                (size: "90%", borders: "NONE", pane: Pane(Queue)),
+                (size: "4", borders: "ALL", pane: Component("custom-header")),
+                (size: "1", borders: "LEFT | RIGHT", pane: Pane(ProgressBar)),
+            ])),
+
+            // Right Side
+            (size: "40%", borders: "ALL", pane: Split(direction: Vertical, panes: [
+                (size: "18", borders: "NONE", pane: Pane(AlbumArt)),
+                (size: "100%", borders: "TOP", pane: Pane(Lyrics)),
+            ])),
+        ])),
+
+        (name: "Directory", pane: Split(direction: Horizontal,panes: [
+            (size: "100%", borders: "ALL", pane: Pane(Directories)),
+        ])),
+
+        (name: "Event", pane: Split(direction: Horizontal, panes: [
+            (size: "100%", borders: "ALL", pane: Pane(Browser(root_tag: "genre", separator: ";"))),
+        ])),
+    ],
+)

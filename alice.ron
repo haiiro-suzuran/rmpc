@@ -1,0 +1,185 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+// #A064B8, #230C2B, #CDB2D3, #594A7B
+(
+    show_song_table_header: false,
+    draw_borders: true,
+    browser_column_widths: [20, 38, 42],
+    background_color: None,
+    modal_backdrop: true,
+    text_color: "#CDB2D3",
+    header_background_color: None,
+    modal_background_color: "#594A7B", // pop up menu
+    preview_label_style: (fg: "white"), // the song prepiew title such as artist and year
+    preview_metadata_group_style: (fg: "yellow"), 
+    song_table_album_separator: None,
+
+
+
+    tab_bar: (
+        enabled: true,
+        active_style: (fg: "#230C2B", bg: "#A064B8"),
+        inactive_style: (fg: "#CDB2D3", bg:None ),
+    ),
+
+
+    highlighted_item_style: (fg: "white"),
+
+    current_item_style: (fg: "#230C2B", bg: "#A064B8"),
+
+    borders_style: (fg: "#A064B8"),
+
+    highlight_border_style: (fg: "#A064B8"),
+
+    symbols: (
+        song: "󰝚 ", 
+        dir: " ", 
+        playlist: "󰲸 ", 
+        marker: "* ", 
+        ellipsis: "...",
+    ),
+
+
+    progress_bar: (
+        symbols: ["█", "█", "█", "█", "█" ],
+        track_style: (fg: "#594A7B"), // background
+        elapsed_style: (fg: "#A064B8"), // behind the cursor
+        thumb_style: (fg: "#A064B8"), // at that moment color the cursor
+    ),
+
+
+    scrollbar: (
+        symbols: ["", "", "", ""],
+        track_style: (fg: None),
+        ends_style: (fg: None),
+        thumb_style: (fg: None),
+    ),
+
+    level_styles: (
+        info:  (fg: "#CDB2D3", bg: "#594A7B"),
+        warn:  (fg: "#CDB2D3", bg: "#594A7B"),
+        error: (fg: "#CDB2D3", bg: "#594A7B"),
+        debug: (fg: "#CDB2D3", bg: "#594A7B"),
+        trace: (fg: "#CDB2D3", bg: "#594A7B"),
+    ),
+
+
+
+    song_table_format: [
+        (
+            prop: (kind: Property(Track),
+                default: (kind: Text("-"))),
+            width: "5%", alignment: Left
+        ),
+        (
+            prop: (kind: Property(Title),
+                default: (kind: Text(" - "))),
+            width: "30%" , alignment: Left
+        ),
+        (
+            prop: (kind: Property(Artist),
+                default: (kind: Text(" - "))),
+            width: "25%" ,alignment: Center
+        ),
+        (
+            prop: (kind: Property(Other("composer")),
+                default: (kind: Text(" - "))),
+            width: "15%" ,alignment: Center
+        ),
+        (
+            prop: (kind: Property(Other("conductor")),
+                default: (kind: Text(" - "))),
+            width: "15%" ,alignment: Center
+        ),
+        (
+            prop: (kind: Property(Other("genre")),
+                default: (kind: Text("-"))),
+            width: "5%", alignment: Center
+        ),
+        (
+            prop: (kind: Property(Duration),
+                default: (kind: Text("-"))),
+            width: "5%", alignment: Right
+        ),
+    ],
+
+
+    layout: Split(
+        direction: Vertical, panes: [
+            (size: "3", pane: Pane(Tabs)),
+            (size: "100%", borders: "NONE", pane: Pane(TabContent)),
+        ]),
+
+
+    header: (rows: []), // do not delete it causes err!!!
+
+    components: {
+        "custom_song_table_header": Split(borders: "LEFT | RIGHT", direction: Horizontal, panes: [
+            (size: "5%" , pane: Pane(Property(content: [(kind: Text(" ")),], align: Left))),
+            (size: "25%", pane: Pane(Property(content: [(kind: Text(" Title")),], align: Left))),
+            (size: "25%", pane: Pane(Property(content: [(kind: Text("Vocal")),], align: Center))),
+            (size: "15%", pane: Pane(Property(content: [(kind: Text("  Music")),], align: Center))),
+            (size: "18%", pane: Pane(Property(content: [(kind: Text("Lyrics ")),], align: Right))),
+            (size: "8"  , pane: Pane(Property(content: [(kind: Text("  Event")),], align: Right))),
+            (size: "6"  , pane: Pane(Property(content: [(kind: Text(" ")),], align: Center))),
+            
+        ] ),
+
+        "custom-header": Split(direction: Horizontal, panes: [
+            // Left Side
+            (size: "20%", pane: Split(direction: Vertical, panes: [
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Text("| ")),
+                    (kind: Property(Status(Bitrate)),
+                        default: (kind: Text(" "))),
+                    (kind: Text(" kbps")),
+                    ],
+                    align: Left))
+                ),
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Text("| ")),
+                    (kind: Property(Status(Elapsed))),
+                    (kind: Text(" / ")),
+                    (kind: Property(Status(Duration))),
+                    ],
+                    align: Left))
+                ),
+                        
+            ])),
+            // Middle Part
+            (size: "60%", pane: Split(direction: Vertical, panes: [
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Property(Song(Artist))),
+                    ],
+                    align: Center))
+                ),
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Property(Song(Title))),
+                    (kind: Text(" - ")),
+                    (kind: Property(Song(Album))),
+                    ],
+                    align: Center))
+                ),
+            ])),
+            // Right Part
+            (size: "20%", pane: Split(direction: Vertical, panes: [
+                (size: "100%", pane: Pane(Property(content: [
+                        (kind: Property(Status(QueueLength()))),
+                        (kind: Text(" 󰴍 | ")),
+                    ], 
+                    align: Right))
+                ),
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Property(Status(QueueTimeTotal(separator: " ")))),
+                    (kind: Text(" 󱎫 | ")),
+                    ], 
+                    align: Right))
+                ),
+            ])),
+        ])
+
+    },
+
+)
