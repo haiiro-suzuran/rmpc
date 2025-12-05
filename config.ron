@@ -3,7 +3,7 @@
 #![enable(unwrap_variant_newtypes)]
 (
     address: "127.0.0.1:6600",
-    lyrics_dir: Some("/home/suzuran/Music"),
+    lyrics_dir: Some("/home/suzuran/Media/Music"),
     password: None,
     theme: Some("alice"),
     cache_dir: None,

@@ -11,7 +11,7 @@
     modal_backdrop: true,
     text_color: "#CDB2D3",
     header_background_color: None,
-    modal_background_color: "#594A7B", // pop up menu
+    modal_background_color: None, // pop up menu
     preview_label_style: (fg: "white"), // the song prepiew title such as artist and year
     preview_metadata_group_style: (fg: "yellow"), 
     song_table_album_separator: None,
